@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.study.security_hyeonwook.domain.user.User;
 import com.study.security_hyeonwook.domain.user.UserRepository;
+import com.study.security_hyeonwook.web.dto.auth.SignupReqDto;
 
 import lombok.RequiredArgsConstructor;
 

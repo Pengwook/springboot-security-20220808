@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.study.security_hyeonwook.handler.aop.annotation.Log;
+import com.study.security_hyeonwook.handler.aop.annotation.Timer;
+import com.study.security_hyeonwook.handler.exception.CustomValidationApiException;
 import com.study.security_hyeonwook.service.auth.AuthService;
 import com.study.security_hyeonwook.service.auth.PrincipalDetailsService;
 import com.study.security_hyeonwook.web.dto.CMRespDto;
@@ -24,11 +27,13 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthRestController {
 	
 	private final PrincipalDetailsService principalDetailsService;
 	private final AuthService authService;
 	
+	@Log
+	@Timer
 	@GetMapping("/signup/validation/username")
 	public ResponseEntity<?> checkUsername(@Valid UsernameCheckReqDto usernameCheckReqDto, BindingResult bindingResult) {
 		
@@ -39,7 +44,7 @@ public class AuthController {
 				errorMessage.put(error.getField(), error.getDefaultMessage());
 			});
 			
-			return ResponseEntity.badRequest().body(new CMRespDto<>(-1, "유효성 검사 실패", errorMessage));
+			throw new CustomValidationApiException("유효성 검사 실패", errorMessage);
 		}
 		
 		boolean status = false;
@@ -65,8 +70,7 @@ public class AuthController {
 				errorMessage.put(error.getField(), error.getDefaultMessage());
 			});
 			
-			return ResponseEntity.badRequest().body(new CMRespDto<>(-1, "유효성 검사 실패", errorMessage));
-			
+			throw new CustomValidationApiException("유효성 검사 실패", errorMessage);
 		}
 		
 		try {
@@ -80,3 +84,9 @@ public class AuthController {
 	}
 	
 }
+
+
+
+
+
+
