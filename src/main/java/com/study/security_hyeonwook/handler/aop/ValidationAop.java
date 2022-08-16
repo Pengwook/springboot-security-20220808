@@ -21,13 +21,13 @@ import com.study.security_hyeonwook.handler.exception.CustomValidationApiExcepti
 public class ValidationAop {
 	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 	
-	@Pointcut("@annotation(com.study.security_hyeonwook.handler.aop.annotation.ValidCheck")
+	@Pointcut("@annotation(com.study.security_hyeonwook.handler.aop.annotation.ValidCheck)")
 	private void enableValid() {}
 	
 	@Before("enableValid()")
 	public void ValidBefore(JoinPoint joinpoint) {
 		Object[] args = joinpoint.getArgs();
-		LOGGER.info("유효성 검사중");
+		LOGGER.info(">>>>>>유효성 검사중");
 		
 		for(Object arg: args) {
 			if(arg.getClass() == BeanPropertyBindingResult.class) {

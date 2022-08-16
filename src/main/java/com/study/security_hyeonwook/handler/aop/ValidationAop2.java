@@ -22,7 +22,7 @@ public class ValidationAop2 {
 	
 	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 	
-	@Pointcut("@annotation(com.study.security_hyeonwook.handler.aop.annotation.ValidCheck2")
+	@Pointcut("@annotation(com.study.security_hyeonwook.handler.aop.annotation.ValidCheck2)")
 	private void enableValid() {}
 	
 	@Before("enableValid()")

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.study.security_hyeonwook.domain.user.User;
 import com.study.security_hyeonwook.domain.user.UserRepository;
+import com.study.security_hyeonwook.handler.aop.annotation.Log;
 import com.study.security_hyeonwook.web.dto.auth.SignupReqDto;
 
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,8 @@ import lombok.RequiredArgsConstructor;
 public class PrincipalDetailsService implements UserDetailsService {
 	
 	private final UserRepository userRepository;
-
+	
+	@Log
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User userEntity = null;
@@ -35,6 +37,7 @@ public class PrincipalDetailsService implements UserDetailsService {
 		return new PrincipalDetails(userEntity);
 	}
 	
+	@Log
 	public boolean addUser(SignupReqDto signupReqDto) throws Exception {
 		
 		return userRepository.save(signupReqDto.toEntity()) > 0;

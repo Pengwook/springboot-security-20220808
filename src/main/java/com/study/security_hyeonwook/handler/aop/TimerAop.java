@@ -9,9 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
-import com.study.security_hyeonwook.handler.aop.annotation.Log;
-
-@Log
 @Aspect
 @Component
 public class TimerAop {
@@ -24,7 +21,7 @@ public class TimerAop {
 	@Pointcut("@annotation(com.study.security_hyeonwook.handler.aop.annotation.Timer)")
 	private void enableTimer() {}
 	
-	@Around("pointCut() && eanbleTimer()") // 어노테이션이 달려있어야함 execution쪽
+	@Around("pointCut() && enableTimer()") // 어노테이션이 달려있어야함 execution쪽
 	public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
