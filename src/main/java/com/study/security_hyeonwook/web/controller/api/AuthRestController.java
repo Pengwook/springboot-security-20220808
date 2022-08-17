@@ -36,6 +36,7 @@ public class AuthRestController {
 	@ValidCheck2
 	@GetMapping("/signup/validation/username")
 	public ResponseEntity<?> checkUsername(@Valid UsernameCheckReqDto usernameCheckReqDto, BindingResult bindingResult) {
+		
 		boolean status = false;
 		
 		try {
@@ -53,6 +54,7 @@ public class AuthRestController {
 	public ResponseEntity<?> signup(@RequestBody @Valid SignupReqDto signupReqDto, BindingResult bindingResult) {
 		boolean status = false;
 		
+		
 		try {
 			status = principalDetailsService.addUser(signupReqDto);
 		} catch (Exception e) {
@@ -64,7 +66,7 @@ public class AuthRestController {
 	}
 	
 	@GetMapping("/principal")
-	public ResponseEntity<?> getPrincipal(@AuthenticationPrincipal PrincipalDetails principalDetails){
+	public ResponseEntity<?> getPrincipal(@AuthenticationPrincipal PrincipalDetails principalDetails) {
 		if(principalDetails == null) {
 			return ResponseEntity.badRequest().body(new CMRespDto<>(-1, "principal is null", null));
 		}
@@ -72,7 +74,6 @@ public class AuthRestController {
 	}
 	
 }
-
 
 
 
