@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.permitAll() 						// 모든 접근 권한을 부여하겠다, 즉 인증을 거칠 필요가 없다, 요기까지 한세트
 			.and() // 추가하는거
 			.formLogin()						// 로그인 방식은 form로그인을 사용하겠다.
-//			.loginPage("/auth/signin") 			// 로그인 페이지는 해당 get요청을 통해 접근한다.
+			.loginPage("/auth/signin") 			// 로그인 페이지는 해당 get요청을 통해 접근한다.
 			.loginProcessingUrl("/auth/signin") // 로그인 요청(post요청)
 			.failureHandler(new AuthFailureHandler()) // 비밀번호를 틀리면 예외처리를 해줌
 			
@@ -42,11 +42,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.and()
 			
 			.oauth2Login()
-			.userInfoEndpoint()
+			.userInfoEndpoint()					
+			/*
+			 * 1. google, naver, kakao 로그인 요청 -> 코드를 발급하여줌.
+			 * 2. 발급받은 코드를 가진 상태로 권한요청(토큰발급요청)을 함.
+			 * 3. 스코프에 등록된 프로필 정보를 가져올 수 있게 된다.
+			 * 4. 해당 정보를 시큐리티의 객체로 전달받음.
+			 * 
+			 */
 			.userService(principalOauth2UserService)
 			
 			.and()
-			
+			.failureHandler(null)			// 로그인 실패
 			.defaultSuccessUrl("/index");  // 기본적으로 성공했을때 ("/") 인덱스 요청으로 get요청해라
 	}
 }

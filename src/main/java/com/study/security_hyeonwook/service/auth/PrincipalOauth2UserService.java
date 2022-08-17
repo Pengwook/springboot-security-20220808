@@ -23,12 +23,28 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 	
 	private final UserRepository userRepository;
 	
+	
+	/*
+	 * OAuth2User의 정보를 우리 서버 database에 등록
+	 */
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 		String provider = null;
 		
-		OAuth2User oAuth2User = super.loadUser(userRequest);
+		/*
+		 * super.loadUser(userRequest)
+		 * 엔드포인트 결과 즉, OAuth2User 정보를 가진 객체를 리턴
+		 */
+		OAuth2User oAuth2User = super.loadUser(userRequest);	// 이 과정이 있어야 oAuth2User의 attribute같은걸 쓸수있음
+		
+		/*
+		 * Provider 정보(클라이언트 아이디, 클라이언트 시크릿, 클라이언트 네임)
+		 */
 		ClientRegistration clientRegistration = userRequest.getClientRegistration();
+		
+		/*
+		 * 실제 프로필 정보(Map)
+		 */
 		Map<String, Object> attributes = oAuth2User.getAttributes();
 		log.error(">>>>> ClientRegistration: {}", clientRegistration);
 		log.error(">>>>> attributes: {}", attributes);
