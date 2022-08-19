@@ -6,8 +6,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
+import org.springframework.web.filter.CorsFilter;
 
 import com.study.security_hyeonwook.config.auth.AuthFailureHandler;
+import com.study.security_hyeonwook.handler.aop.annotation.Log;
 import com.study.security_hyeonwook.service.auth.PrincipalOauth2UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -17,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
+	private final CorsFilter corsFilter;
 	private final PrincipalOauth2UserService principalOauth2UserService;
 	
 	@Bean
@@ -24,9 +28,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		return new BCryptPasswordEncoder();
 	}
 	
+	@Log
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable(); // 이걸 안해두면 문제가 생김
+		http.headers()
+		.frameOptions()
+		.disable();
+//		http.addFilter(corsFilter); //cors 인증을 하지 않겠다.
 		http.authorizeRequests() // 요청이 들어왔을때 이런 인증을 거쳐라는 의미
 			.antMatchers("/", "/index", "/mypage/**") 		// 우리가 지정한 요청, mypage/** -> mypage이후 요청엔 인증을 거쳐라
 			.authenticated()					// 인증을 거쳐라
