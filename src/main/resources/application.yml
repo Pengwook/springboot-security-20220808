@@ -47,7 +47,15 @@ spring:
     url:  "jdbc:mariadb://web-study.cwi8vj1jgfhc.ap-northeast-2.rds.amazonaws.com:3306/study?useUnicode=true&characterEncoding=UTF-8"
     username: "admin"
     password: "1q2w3e4r"
+    
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
 
 mybatis:
   mapper-locations: 
   - /mappers/*.xml
+  
+file:
+  path: C:/junil/hyeonwook/workspace/git/springboot-security-20220808/upload/

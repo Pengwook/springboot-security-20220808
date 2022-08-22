@@ -37,11 +37,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.disable();
 //		http.addFilter(corsFilter); //cors 인증을 하지 않겠다.
 		http.authorizeRequests() // 요청이 들어왔을때 이런 인증을 거쳐라는 의미
+			.antMatchers("/api/v1/grant/test/user/**")
+			.access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+			
+			.antMatchers("/api/v1/grant/test/manager/**")
+			.access("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+			
+			.antMatchers("/notice/addition", "/notice/modification/**")
+			//.access("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+			.hasRole("ADMIN")
+			
+			.antMatchers("/api/v1/grant/test/admin/**")
+			.access("hasRole('ROLE_ADMIN')")
+			
 			.antMatchers("/", "/index", "/mypage/**") 		// 우리가 지정한 요청, mypage/** -> mypage이후 요청엔 인증을 거쳐라
 			.authenticated()					// 인증을 거쳐라
+			
 			.anyRequest() 						// 다른 모든 요청은
 			.permitAll() 						// 모든 접근 권한을 부여하겠다, 즉 인증을 거칠 필요가 없다, 요기까지 한세트
+			
 			.and() // 추가하는거
+			
 			.formLogin()						// 로그인 방식은 form로그인을 사용하겠다.
 			.loginPage("/auth/signin") 			// 로그인 페이지는 해당 get요청을 통해 접근한다.
 			.loginProcessingUrl("/auth/signin") // 로그인 요청(post요청)
