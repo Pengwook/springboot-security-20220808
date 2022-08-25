@@ -1,6 +1,9 @@
 package com.study.security_hyeonwook.domain.notice;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import com.study.security_hyeonwook.web.dto.notice.GetNoticeListResponseDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,4 +24,19 @@ public class Notice {
 	private int file_code;
 	private String file_name;
 	private LocalDateTime create_date;
+	
+	private int total_notice_count;
+	
+	public GetNoticeListResponseDto toListDto() {
+		return GetNoticeListResponseDto.builder()
+				.noticeCode(notice_code)
+				.noticeTitle(notice_title)
+				.userId(user_id)
+				.createDate(create_date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+				.noticeCount(notice_count)
+				.totalNoticeCount(total_notice_count)
+				.build();
+				
+				
+	}
 }
