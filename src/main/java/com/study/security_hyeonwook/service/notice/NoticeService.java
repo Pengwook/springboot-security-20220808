@@ -8,7 +8,7 @@ import com.study.security_hyeonwook.web.dto.notice.GetNoticeResponseDto;
 
 public interface NoticeService { 
 	
-	public List<GetNoticeListResponseDto> getNoitceList(int page, String searchFlag, String seachValue) throws Exception;
+	public List<GetNoticeListResponseDto> getNoitceList(int page, String searchFlag, String searchValue) throws Exception;
 	public int addNotice(AddNoticeReqDto addNoticeReqDto) throws Exception;
 	public GetNoticeResponseDto getNotice(String flag, int noticeCode) throws Exception;
 }

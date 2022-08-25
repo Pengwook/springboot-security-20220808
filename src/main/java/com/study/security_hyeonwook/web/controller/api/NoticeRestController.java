@@ -44,11 +44,13 @@ public class NoticeRestController {
 	public ResponseEntity<?> getNoticeList(@PathVariable int page, @RequestParam String searchFlag, @RequestParam String searchValue) {
 		List<GetNoticeListResponseDto> listDto = null;
 		
+		log.info("{}, {}", searchFlag, searchValue);
+		
 		try {
-			noticeService.getNoitceList(page, searchFlag, searchValue);
+			listDto = noticeService.getNoitceList(page, searchFlag, searchValue);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "Failed to write", listDto));
+			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "database error", listDto));
 		}
 		return ResponseEntity.ok(new CMRespDto<>(1, "lookup successful", listDto));
 	}
