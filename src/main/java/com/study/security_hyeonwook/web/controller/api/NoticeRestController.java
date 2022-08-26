@@ -69,7 +69,7 @@ public class NoticeRestController {
 			return ResponseEntity.internalServerError().body(new CMRespDto<>(-1, "Failed to write", noticeCode));
 		}
 		
-		return ResponseEntity.ok(new CMRespDto<>(1, "completing ception", noticeCode));
+		return ResponseEntity.ok(new CMRespDto<>(1, "completing creation", noticeCode));
 	}
 	
 	@GetMapping("/{noticeCode}")

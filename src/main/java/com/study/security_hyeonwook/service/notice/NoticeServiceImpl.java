@@ -61,43 +61,46 @@ public class NoticeServiceImpl implements NoticeService{
 		
 		Notice notice = null;
 		
-		notice = Notice.builder()
-				.notice_title(addNoticeReqDto.getNoticeTitle())
-				.user_code(addNoticeReqDto.getUserCode())
-				.notice_content(addNoticeReqDto.getIr1())
-				.build();
+		String noticeTitle = addNoticeReqDto.getNoticeTitle();
 		
-		noticeRepository.saveNotice(notice);	
-		
-		if(predicate.test(addNoticeReqDto.getFile().get(0).getOriginalFilename())) {
-			List<NoticeFile> noticeFiles = new ArrayList<NoticeFile>();;
-		
-			for(MultipartFile file : addNoticeReqDto.getFile()) {
-				String originalFilename = file.getOriginalFilename();
-				String tempFilename = UUID.randomUUID().toString().replace("-", "") + "_" + originalFilename;	// 랜덤한 문자열을 만들어줌, 절대 겹치지않는 고유한 키값
-				log.info(tempFilename);
-				
-				Path uploadPath = Paths.get(filePath, "notice/" + tempFilename);
-				
-				File f = new File(filePath + "notice");	// 파일객체 만듦
-				if(!f.exists()) {	// 만약 파일 객체가 존재하지않으면
-					f.mkdirs();		// 경로를 만들어라, make directory
-				}
-		
-				try {
-					Files.write(uploadPath, file.getBytes());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
-				noticeFiles.add(NoticeFile.builder().notice_code(notice.getNotice_code()).file_name(tempFilename).build());
-			}
+		for(int i = 0; i < 200; i++) {
+			notice = Notice.builder()
+					.notice_title(noticeTitle + "_" + i)
+					.user_code(addNoticeReqDto.getUserCode())
+					.notice_content(addNoticeReqDto.getIr1())
+					.build();
 			
+			noticeRepository.saveNotice(notice);	
+			
+			if(predicate.test(addNoticeReqDto.getFile().get(0).getOriginalFilename())) {
+				List<NoticeFile> noticeFiles = new ArrayList<NoticeFile>();;
+			
+				for(MultipartFile file : addNoticeReqDto.getFile()) {
+					String originalFilename = file.getOriginalFilename();
+					String tempFilename = UUID.randomUUID().toString().replace("-", "") + "_" + originalFilename;	// 랜덤한 문자열을 만들어줌, 절대 겹치지않는 고유한 키값
+					log.info(tempFilename);
+					
+					Path uploadPath = Paths.get(filePath, "notice/" + tempFilename);
+					
+					File f = new File(filePath + "notice");	// 파일객체 만듦
+					if(!f.exists()) {	// 만약 파일 객체가 존재하지않으면
+						f.mkdirs();		// 경로를 만들어라, make directory
+					}
+			
+					try {
+						Files.write(uploadPath, file.getBytes());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					
+					noticeFiles.add(NoticeFile.builder().notice_code(notice.getNotice_code()).file_name(tempFilename).build());
+		}
+		
 			noticeRepository.saveNoticeFiles(noticeFiles);
 			
 		}
 		
-		
+		}
 		return notice.getNotice_code();
 	}
 	
